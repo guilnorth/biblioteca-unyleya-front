@@ -1,16 +1,19 @@
 <template>
   <div>
     <ListResourceBase
-      @open-detail="goToD"
+      @open-detail="goToDetail"
       :endpoint="$router.currentRoute.params.endpoint"
     />
-    <ModalBase ref="dialog" :onClosedEvent="dimiss">
+    <ModalBase
+      :titleModal="modalTitle[this.$router.currentRoute.params.endpoint]"
+    >
       <router-view></router-view>
     </ModalBase>
   </div>
 </template>
 
 <script>
+import { mapActions } from "vuex";
 import ModalBase from "../../components/modal/ModalBase";
 import ListResourceBase from "./ListResourceBase";
 export default {
@@ -20,18 +23,23 @@ export default {
     ListResourceBase
   },
   mounted() {
-    if (this.$router.currentRoute.params.id) this.$refs.dialog.dialog = true;
+    if (this.$router.currentRoute.params.id) this.openModal();
   },
+  data: () => ({
+    modalTitle: {
+      authors: "Autor",
+      books: "Livro",
+      genres: "Gênero",
+      publishers: "Editora"
+    }
+  }),
   methods: {
-    goToD: function(id) {
+    ...mapActions("modal", ["openModal"]),
+    goToDetail: function(id) {
       const { endpoint } = this.$router.currentRoute.params;
 
       this.$router.replace(`/${endpoint}/${id}`);
-      this.$refs.dialog.dialog = !this.$refs.dialog.dialog;
-    },
-    dimiss: function() {
-      const { endpoint } = this.$router.currentRoute.params;
-      this.$router.replace(`/${endpoint}`);
+      this.openModal();
     }
   }
 };

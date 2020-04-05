@@ -4,21 +4,38 @@
       v-if="endpoint == 'authors'"
       :onItemEvent="emitEventOpenModal"
     />
-    <!-- <ListBooks
-      v-if="endpoint == 'books'"
+    <ListGenres
+      v-else-if="endpoint == 'genres'"
       :onItemEvent="emitEventOpenModal"
-    /> -->
-    <h1 v-else>Oh não 😢 <br/> {{endpoint || 'Isso'}} parece não existir...</h1>
+    />
+    <ListPublishers
+      v-else-if="endpoint == 'publishers'"
+      :onItemEvent="emitEventOpenModal"
+    />
+    <ListBooks
+      v-else-if="endpoint == 'books'"
+      :onItemEvent="emitEventOpenModal"
+    />
+    <h1 v-else>
+      Oh não 😢 <br />
+      {{ endpoint || "Isso" }} parece não existir...
+    </h1>
   </div>
 </template>
 
 <script>
 import ListAuthors from "../../views/authors/ListAuthors";
+import ListGenres from "../../views/genres/ListGenres";
+import ListPublishers from "../../views/publishers/ListPublishers";
+import ListBooks from "../../views/books/ListBooks";
 export default {
   name: "ListResourceBase",
   props: ["endpoint"],
   components: {
-    ListAuthors
+    ListAuthors,
+    ListGenres,
+    ListPublishers,
+    ListBooks
   },
   methods: {
     emitEventOpenModal: function(id) {
