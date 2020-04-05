@@ -11,13 +11,18 @@ const routes = [
     component: Home
   },
   {
-    path: "/about",
-    name: "About",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
+    path: "/:endpoint",
+    name: "List",
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/About.vue")
+      import(/* webpackChunkName: "about" */ "../components/base/ListBase.vue"),
+    children: [
+      {
+        path: ":id",
+        name: "Edit",
+        component: () =>
+          import(/* webpackChunkName: "login" */ "../components/base/DetailBase.vue")
+      }
+    ]
   }
 ];
 
@@ -26,5 +31,19 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 });
+router.beforeEach(async (to, from, next) => {
+  const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+
+  if (requiresAuth) {
+    next("/");
+  } else {
+    next();
+  }
+});
 
 export default router;
+
+/* 
+meta: {
+  requiresAuth: true
+} */
