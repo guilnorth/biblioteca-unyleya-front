@@ -3,12 +3,12 @@ export default function(resource, objectModel) {
   return {
     namespaced: true,
     state: {
-      detail: objectModel,
+      detail: { ...objectModel },
       list: [],
       loadingOnList: false,
       loadingOnDetail: false,
       loadingOnSave: false,
-      notification: {}
+      notification: { type: null, message: null, show: false }
     },
     getters: {},
     mutations: {
@@ -35,6 +35,12 @@ export default function(resource, objectModel) {
       }
     },
     actions: {
+      resetList: ({ commit }) => {
+        commit("setList", []);
+      },
+      resetDetail: ({ commit }) => {
+        commit("setDetail", { ...objectModel });
+      },
       getList: async ({ commit }) => {
         commit("setLoadingList", true);
         try {
@@ -63,7 +69,7 @@ export default function(resource, objectModel) {
         }
         commit("setLoadingDetail", false);
       },
-      save: async ({ commit }, { data }) => {
+      save: async ({ commit, dispatch }, { data }) => {
         commit("setLoadingSave", true);
         try {
           const result = await BaseService.saveItem(resource, data);
@@ -73,6 +79,7 @@ export default function(resource, objectModel) {
             type: "success",
             message: "Salvo com sucesso"
           });
+          dispatch("getList");
         } catch (error) {
           console.log(error);
           commit("setNotification", {
@@ -82,7 +89,7 @@ export default function(resource, objectModel) {
         }
         commit("setLoadingSave", false);
       },
-      update: async ({ commit }, { data, id }) => {
+      update: async ({ commit, dispatch }, { data, id }) => {
         commit("setLoadingSave", true);
         try {
           const result = await BaseService.updateItem(resource, data, id);
@@ -92,6 +99,7 @@ export default function(resource, objectModel) {
             type: "success",
             message: "Atualizado com sucesso"
           });
+          dispatch("getList");
         } catch (error) {
           console.log(error);
           commit("setNotification", {
@@ -101,16 +109,17 @@ export default function(resource, objectModel) {
         }
         commit("setLoadingSave", false);
       },
-      delete: async ({ commit }, { data, id }) => {
+      delete: async ({ commit, dispatch }, { id }) => {
         commit("setLoadingSave", true);
         try {
-          await BaseService.updateItem(resource, data, id);
-          commit("setDetail", objectModel);
+          await BaseService.deleteItem(resource, id);
+          commit("setDetail", { ...objectModel });
           //router.replace("/authors");
           commit("setNotification", {
             type: "success",
             message: "Registro apagado"
           });
+          dispatch("getList");
         } catch (error) {
           console.log(error);
           commit("setNotification", {
