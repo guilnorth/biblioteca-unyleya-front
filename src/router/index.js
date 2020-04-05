@@ -1,6 +1,5 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Home from "../views/Home.vue";
 
 Vue.use(VueRouter);
 
@@ -8,19 +7,21 @@ const routes = [
   {
     path: "/",
     name: "Home",
-    component: Home
+    redirect: "/books"
   },
   {
     path: "/:endpoint",
     name: "List",
     component: () =>
-      import(/* webpackChunkName: "about" */ "../components/base/ListBase.vue"),
+      import(/* webpackChunkName: "list" */ "../components/base/ListBase.vue"),
     children: [
       {
         path: ":id",
-        name: "Edit",
+        name: "Detail",
         component: () =>
-          import(/* webpackChunkName: "login" */ "../components/base/DetailBase.vue")
+          import(
+            /* webpackChunkName: "detail" */ "../components/base/DetailBase.vue"
+          )
       }
     ]
   }
