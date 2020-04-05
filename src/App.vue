@@ -3,10 +3,8 @@
     <NavigationDrawer ref="drawer" />
     <Header @toggle-drawer="$refs.drawer.drawer = !$refs.drawer.drawer" />
     <v-content>
-      <v-container class="" fluid>
-        <v-row align="center" justify="center">
-          <router-view></router-view>
-        </v-row>
+      <v-container fluid>
+        <router-view></router-view>
       </v-container>
     </v-content>
   </v-app>
