@@ -1,36 +1,36 @@
 <template>
   <v-row>
-    <v-col cols="12" sm="6" md="4">
-      <v-text-field label="Legal first name*" required></v-text-field>
+    <v-col cols="12" sm="6" md="6">
+      <v-text-field label="Nome*" required v-model="item.name"></v-text-field>
     </v-col>
-    <v-col cols="12" sm="6" md="4">
+    <v-col cols="12" sm="6" md="6">
       <v-text-field
-        label="Legal middle name"
-        hint="example of helper text only on focus"
-      ></v-text-field>
-    </v-col>
-    <v-col cols="12" sm="6" md="4">
-      <v-text-field
-        label="Legal last name*"
-        hint="example of persistent helper text"
-        persistent-hint
+        type="number"
+        label="Ano de nascimento*"
         required
+        v-model="item.year_birth"
+        hint="Exemplo: 1997 (AAAA)"
       ></v-text-field>
-    </v-col>
-    <v-col cols="12">
-      <v-text-field label="Email*" required></v-text-field>
-    </v-col>
-    <v-col cols="12">
-      <v-text-field label="Password*" type="password" required></v-text-field>
     </v-col>
     <v-col cols="12" sm="6">
       <v-select
-        :items="['0-17', '18-29', '30-54', '54+']"
-        label="Age*"
+        v-model="item.gender"
+        :items="items"
+        item-text="name"
+        item-value="value"
+        label="Sexo*"
         required
       ></v-select>
     </v-col>
-    <v-col cols="12" sm="6">
+    <v-col cols="12" sm="6" md="6">
+      <v-text-field
+        label="Nacionalidade*"
+        hint="Exemplo: Brasil"
+        v-model="item.nationality"
+        required
+      ></v-text-field>
+    </v-col>
+    <!--  <v-col cols="12" sm="6">
       <v-autocomplete
         :items="[
           'Skiing',
@@ -46,13 +46,26 @@
         label="Interests"
         multiple
       ></v-autocomplete>
-    </v-col>
+    </v-col> -->
   </v-row>
 </template>
 
 <script>
 export default {
-  name: "FormAuthors"
+  name: "FormAuthors",
+  props: ["item"],
+  data() {
+    return {
+      select: {
+        value: this.item.gender
+        /* name: this.item.gender === "M" ? "Masculino" : "Feminino" */
+      },
+      items: [
+        { name: "Masculino", value: "M" },
+        { name: "Feminino", value: "F" }
+      ]
+    };
+  }
 };
 </script>
 
