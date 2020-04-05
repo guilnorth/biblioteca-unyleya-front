@@ -1,7 +1,7 @@
 import GenericModule from "./GenericModule";
-import { Genres } from "../types/Types";
+import { Genre } from "../types/Types";
 
-const genres = GenericModule("genres", Genres);
+const genres = GenericModule("genres", Genre);
 
 const state = {
   ...genres.state

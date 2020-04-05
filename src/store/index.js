@@ -6,6 +6,7 @@ import authors from "./modules/authors";
 import books from "./modules/books";
 import genres from "./modules/genres";
 import publishers from "./modules/publishers";
+import modal from "./modules/modal";
 
 Vue.use(Vuex);
 
@@ -14,6 +15,7 @@ export default new Vuex.Store({
     authors,
     books,
     genres,
-    publishers
+    publishers,
+    modal
   }
 });
