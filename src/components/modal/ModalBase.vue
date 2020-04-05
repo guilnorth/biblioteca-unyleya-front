@@ -1,9 +1,15 @@
 <template>
-  <v-dialog v-model="dialog" max-width="600px" @input="onClosed">
+  <v-dialog v-model="dialog" max-width="600px" @click:outside="onClosed">
     <v-card>
-      <v-card-title>
-        <span class="headline">User Profile</span>
-      </v-card-title>
+      <v-toolbar color="primary">
+        <v-toolbar-title class="ligth">{{ titleModal }}</v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-toolbar-items>
+          <v-btn icon dark @click="closeModal">
+            <v-icon color="white">mdi-close</v-icon>
+          </v-btn>
+        </v-toolbar-items>
+      </v-toolbar>
       <v-card-text>
         <v-container>
           <slot></slot>
@@ -14,16 +20,20 @@
 </template>
 
 <script>
+import { mapActions, mapState } from "vuex";
 export default {
   name: "ModalBase",
-  props: ["onClosedEvent"],
-  data: () => ({
-    dialog: false
-  }),
+  props: ["onClosedEvent", "titleModal"],
+  data: () => ({}),
+  computed: {
+    ...mapState({
+      dialog: state => state.modal.isOpen
+    })
+  },
   methods: {
+    ...mapActions("modal", ["openModal", "closeModal"]),
     onClosed: function() {
-      console.log("123");
-      return this.onClosedEvent();
+      this.closeModal();
     }
   }
 };
