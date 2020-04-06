@@ -12,6 +12,7 @@
 - Yarn ou Npm
 
 > https://docs.npmjs.com/downloading-and-installing-node-js-and-npm
+
 > https://classic.yarnpkg.com/en/docs/install/#debian-stable
 
 Após clonar o repositório, dentro da pasta do projeto execute:
